@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Inventory System</title>
+
+    <style>
+        body {
+            	font-size: 25px;
+	    	font-family: Rockwell;
+            	margin: 30px;
+	    	color: #30030B;
+        }
+
+        table {
+            	width: 80%;
+	    	margin-left: auto;
+	    	margin-right: auto;
+            	border-collapse: collapse;
+        }
+
+	#itemName {
+		background-color: #FFE2E8;
+		margin-left: 130px;
+		margin-right: 28px;
+		margin-bottom: 20px;
+		padding: 10px;
+		border-radius: 15px;
+		font-size: 15px;
+	    	font-family: Rockwell;
+		font-weight: bold;
+	}
+
+	#itemNumber {
+		background-color: #FFE2E8;
+		margin-left: auto;
+		margin-right: 15px;
+		padding: 10px;
+		border-radius: 15px;
+		font-size: 15px;
+	    	font-family: Rockwell;
+		font-weight: bold;
+	}
+
+	h2 {
+		background-color: hsla(350, 16%, 92%, 0.75);
+		padding: 15px;
+	}
+
+        th, td {
+            	border: 1px solid black; 
+            	padding: 10px;
+            	text-align: left;
+	    	font-weight: bold;
+	    	background-color: #FFEEF1;
+        }
+
+        th {
+            	background-color: #f2f2f2;
+        }
+
+        button {
+            	margin-top: 10px;
+		margin-left: 25px;
+		font-weight: bold;
+		padding: 10px;
+		font-family: Rockwell;
+		font-size: 15px;
+		border-radius: 15px;
+		background-color: #FFEEF1;
+		cursor: pointer;
+    	}
+
+	button:visited {
+		text-decoration:none;
+		color: black;
+	}
+	
+	button:hover {
+		background-color:#FFD4DB;
+		border: 2px solid black;
+		text-decoration: underline;
+		color: #97545F;
+	}
+
+	button:active {
+		background-color:#FFB2BF ;
+		text-decoration: none;
+		color: blue;
+	}
+
+	body{
+		background-image:url("yes.gif");
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		height: 580px;
+	}
+
+    </style>
+
+</head>
+<body>
+    <h2>Inventory System</h2>
+    <input type="text" id="itemName" placeholder="Item">
+    <input type="number" id="itemNumber" placeholder="Amount">
+    <button onclick="addItem()">Add Item</button>
+    <button onclick="addNoOfItem()">Add Items</button>
+    <button onclick="subNoOfItem()">Subtract Items</button>
+    <button onclick="removeItem()">Remove Item</button>
+
+    <table id="inventoryTable">
+        <tr>
+            <th>Item Name</th>
+            <th>Number of Items</th>
+        </tr>
+    </table>
+
+    <script>
+        var supply = [];
+
+        function addItem() {
+            var name = document.getElementById('itemName').value;
+            var num = parseInt(document.getElementById('itemNumber').value, 10);
+            var item = supply.find(item => item.itemName === name);
+            if (!item) {
+                supply.push({ itemName: name, noOfItem: num });
+                displayItems();
+            } else {
+                alert('Item already exists. Use Add or Subtract buttons to modify item count.');
+            }
+        }
+
+        function addNoOfItem() {
+            var name = document.getElementById('itemName').value;
+            var num = parseInt(document.getElementById('itemNumber').value, 10);
+            var item = supply.find(item => item.itemName === name);
+            if (item) {
+                item.noOfItem += num;
+                displayItems();
+            } else {
+                alert('Item not found.');
+            }
+        }
+
+        function subNoOfItem() {
+            var name = document.getElementById('itemName').value;
+            var num = parseInt(document.getElementById('itemNumber').value, 10);
+            var item = supply.find(item => item.itemName === name);
+            if (item) {
+                if (item.noOfItem - num < 0) {
+                    alert('Cannot have negative items.');
+                } else {
+                    item.noOfItem -= num;
+                    displayItems();
+                }
+            } else {
+                alert('Item not found.');
+            }
+        }
+
+        function removeItem() {
+            var name = document.getElementById('itemName').value;
+            supply = supply.filter(item => item.itemName !== name);
+            displayItems();
+        }
+
+        function displayItems() {
+            var table = document.getElementById('inventoryTable');
+            table.innerHTML = '<tr><th>Item Name</th><th>Number of Items</th></tr>';
+            supply.forEach(item => {
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = item.itemName;
+                cell2.innerHTML = item.noOfItem;
+            });
+        }
+    </script>
+</body>
+</html>
